@@ -9,7 +9,7 @@ from flask_socketio import SocketIO, join_room, leave_room, send, emit, rooms
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'so secret'
 CORS(app)
-ws = SocketIO(app, cors_allowed_origins='*')
+ws = SocketIO(app)
 
 all_rooms = {}
 
