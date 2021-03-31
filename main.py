@@ -9,36 +9,36 @@ from flask_socketio import SocketIO, join_room, leave_room, send, emit, rooms
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'so secret'
 CORS(app)
-ws = SocketIO(app)
+ws = SocketIO(app, cors_allowed_origins='*')
 
 all_rooms = {}
 
 @ws.on('join')
-def on_join(room_name):
-    join_room(room_name)
+def on_join(room):
+    join_room(room)
     send(
         {
             'message': 'A new person has entered the room.',
             'timestamp': int(time.time()),
         },
-        room=room_name
+        room=room
     )
-    all_rooms.setdefault(room_name, 0)
-    all_rooms[room_name] += 1
+    all_rooms.setdefault(room, 0)
+    all_rooms[room] += 1
 
 @ws.on('leave')
-def on_leave(room_name):
-    leave_room(room_name)
+def on_leave(room):
+    leave_room(room)
     send(
         {
           'message': 'Someone has left the room.',
           'timestamp': int(time.time()),
         },
-        room=room_name
+        room=room
     )
-    all_rooms[room_name] -= 1
-    if all_rooms[room_name] == 0:
-        all_rooms.pop(room_name)
+    all_rooms[room] -= 1
+    if all_rooms[room] == 0:
+        all_rooms.pop(room)
 
 @ws.on('message')
 def on_message(msg):
