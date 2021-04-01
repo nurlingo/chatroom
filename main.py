@@ -8,8 +8,8 @@ from flask_socketio import SocketIO, join_room, leave_room, send, emit, rooms
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
-# CORS(app)
-ws = SocketIO(app)
+CORS(app)
+ws = SocketIO(app, cors_allowed_origins='*')
 
 all_rooms = {}
 
